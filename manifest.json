@@ -2,7 +2,7 @@
   "name": "Gastos Mensais",
   "short_name": "Gastos",
   "description": "App para gerenciar gastos mensais.",
-  "start_url": "./index.html",
+  "start_url": "/gastos/index.html",
   "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
