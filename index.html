@@ -3,51 +3,45 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Expense Tracker</title>
+    <title>Expenses</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="manifest" href="manifest.json" />
   </head>
   <body>
     <div class="container">
-      <select id="language-selector">
-        <option value="pt">Português</option>
-        <option value="en">English</option>
-        <option value="en">Français</option>
-      </select>
-
+      <button onclick="addRow('income')">Ganhos +</button>
+      <button onclick="addRow('expense')">Despesas +</button>
       <table id="financeTable">
         <thead>
           <tr>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Amount ($)</th>
-            <th>Actions</th>
+            <th>Categoria</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+            <th>Ações</th>
           </tr>
         </thead>
         <tbody></tbody>
         <tfoot>
           <tr class="total-row">
-            <td>Total Income</td>
+            <td>Ganhos</td>
             <td></td>
             <td id="totalIncome">0</td>
             <td></td>
           </tr>
           <tr class="total-row">
-            <td>Total Expenses</td>
+            <td>Despesas</td>
             <td></td>
             <td id="totalExpenses">0</td>
             <td></td>
           </tr>
           <tr class="total-row">
-            <td>Balance</td>
+            <td>Total</td>
             <td></td>
             <td id="balance">0</td>
             <td></td>
           </tr>
         </tfoot>
       </table>
-      <button onclick="addRow('income')">Add Income</button>
-      <button onclick="addRow('expense')">Add Expense</button>
     </div>
     <script src="script.js"></script>
     <script>
@@ -55,12 +49,6 @@
         window.addEventListener('load', () => {
           navigator.serviceWorker
             .register('service-worker.js')
-            .then((registration) => {
-              console.log(
-                'Service Worker registered with scope:',
-                registration.scope,
-              );
-            })
             .catch((error) => {
               console.log('Service Worker registration failed:', error);
             });

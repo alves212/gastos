@@ -1,11 +1,10 @@
-const CACHE_NAME = 'monthly-expenses-v1';
+const CACHE_NAME = 'expenses';
 const urlsToCache = [
   '/index.html',
   '/manifest.json',
   '/script.js',
   '/service-worker.js',
   '/styles.css',
-  '/translations.json', // Adicionando o translations.json ao cache
 ];
 
 // Install the Service Worker
