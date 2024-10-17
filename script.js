@@ -3,14 +3,12 @@ const STORAGE_KEY = 'financeData';
 // Load data from localStorage on startup
 function loadData() {
   const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
-
-  console.log('Data loaded from localStorage:', savedData); // Verify loaded data
+  console.log('Data loaded from localStorage:', savedData);
 
   savedData.forEach(({ type, description, amount }) => {
     createRow(type, description, amount);
   });
 
-  // Execute total calculation after loading data
   setTimeout(() => {
     console.log('Calculating totals after loading data.');
     calculateTotals();
@@ -22,14 +20,14 @@ function saveData() {
   const rows = Array.from(document.querySelectorAll('#financeTable tbody tr'));
 
   const data = rows.map((row) => {
-    const type = row.cells[0].textContent === 'Income' ? 'income' : 'expense'; // Correct type mapping
+    const type = row.cells[0].textContent === 'Income' ? 'income' : 'expense';
     const description = row.querySelector('input[type="text"]').value;
     const amount =
       parseFloat(row.querySelector('input[type="number"]').value) || 0;
     return { type, description, amount };
   });
 
-  console.log('Saving data to localStorage:', data); // Verify saved data
+  console.log('Saving data to localStorage:', data);
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
@@ -38,7 +36,6 @@ function calculateTotals() {
   let totalIncome = 0;
   let totalExpenses = 0;
 
-  // Check inputs and calculate totals
   document.querySelectorAll('input[type="number"]').forEach((input) => {
     const value = parseFloat(input.value) || 0;
     if (input.classList.contains('income')) {
@@ -48,8 +45,8 @@ function calculateTotals() {
     }
   });
 
-  console.log('Total Income:', totalIncome); // Verify income total
-  console.log('Total Expenses:', totalExpenses); // Verify expenses total
+  console.log('Total Income:', totalIncome);
+  console.log('Total Expenses:', totalExpenses);
 
   document.getElementById('totalIncome').textContent = totalIncome.toFixed(2);
   document.getElementById('totalExpenses').textContent =
@@ -127,3 +124,47 @@ if ('serviceWorker' in navigator) {
       });
   });
 }
+
+// Detect user's language
+const userLanguage = navigator.language.slice(0, 2);
+
+fetch('translations.json')
+  .then((response) => response.json())
+  .then((translations) => {
+    const lang = translations[userLanguage] || translations['en'];
+
+    // Apply translations to the DOM
+    document.title = lang.title;
+    document.querySelector('button.add-income').textContent = lang.add_income;
+    document.querySelector('button.add-expense').textContent = lang.add_expense;
+    document.querySelector('label.description').textContent = lang.description;
+    document.querySelector('label.amount').textContent = lang.amount;
+
+    // Set initial language for the selector
+    document.getElementById('language-selector').value = userLanguage;
+  })
+  .catch((error) => console.error('Error loading translations:', error));
+
+// Change language on selection
+document
+  .getElementById('language-selector')
+  .addEventListener('change', (event) => {
+    const selectedLanguage = event.target.value;
+
+    fetch('translations.json')
+      .then((response) => response.json())
+      .then((translations) => {
+        const lang = translations[selectedLanguage] || translations['en'];
+
+        // Apply translations to the DOM
+        document.title = lang.title;
+        document.querySelector('button.add-income').textContent =
+          lang.add_income;
+        document.querySelector('button.add-expense').textContent =
+          lang.add_expense;
+        document.querySelector('label.description').textContent =
+          lang.description;
+        document.querySelector('label.amount').textContent = lang.amount;
+      })
+      .catch((error) => console.error('Error loading translations:', error));
+  });

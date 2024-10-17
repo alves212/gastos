@@ -5,6 +5,7 @@ const urlsToCache = [
   '/script.js',
   '/service-worker.js',
   '/styles.css',
+  '/translations.json', // Adicionando o translations.json ao cache
 ];
 
 // Install the Service Worker
