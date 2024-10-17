@@ -1,176 +1,65 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="./manifest.json" />
-    <title>Gastos Mensais</title>
-    <link rel="stylesheet" href="./assets/styles/gastos.css" />
+    <title>Expense Tracker</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="manifest" href="manifest.json" />
   </head>
   <body>
     <div class="container">
-      <div class="content">
-        <table id="financeTable">
-          <thead>
-            <tr>
-              <th>Categoria</th>
-              <th>Descrição</th>
-              <th>Valor (R$)</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Ganhos</td>
-              <td>Salário</td>
-              <td>
-                <input type="number" class="income" id="salary" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Ganhos</td>
-              <td>Pensão</td>
-              <td>
-                <input type="number" class="income" id="pension" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Aluguel</td>
-              <td>
-                <input type="number" class="expense" id="rent" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Luz</td>
-              <td>
-                <input
-                  type="number"
-                  class="expense"
-                  id="electricity"
-                  value="0"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Água</td>
-              <td>
-                <input type="number" class="expense" id="water" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Banco</td>
-              <td>
-                <input type="number" class="expense" id="banque" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Empréstimo</td>
-              <td>
-                <input type="number" class="expense" id="loan" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Seguro Casa</td>
-              <td>
-                <input
-                  type="number"
-                  class="expense"
-                  id="homeInsurance"
-                  value="0"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Seguro Saúde</td>
-              <td>
-                <input
-                  type="number"
-                  class="expense"
-                  id="healthInsurance"
-                  value="0"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Seguro Carro</td>
-              <td>
-                <input
-                  type="number"
-                  class="expense"
-                  id="carInsurance"
-                  value="0"
-                />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Gasolina</td>
-              <td>
-                <input type="number" class="expense" id="gasoline" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>SFR</td>
-              <td>
-                <input type="number" class="expense" id="food" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Netflix</td>
-              <td>
-                <input type="number" class="expense" id="netflix" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Academia</td>
-              <td>
-                <input type="number" class="expense" id="gym" value="0" />
-              </td>
-            </tr>
-            <tr>
-              <td>Gastos</td>
-              <td>Suplementos</td>
-              <td>
-                <input
-                  type="number"
-                  class="expense"
-                  id="supplements"
-                  value="0"
-                />
-              </td>
-            </tr>
-          </tbody>
-          <tfoot>
-            <tr class="total-row">
-              <td>Total Ganhos</td>
-              <td></td>
-              <td id="totalIncome">0</td>
-            </tr>
-            <tr class="total-row">
-              <td>Total Gastos</td>
-              <td></td>
-              <td id="totalExpenses">0</td>
-            </tr>
-            <tr class="total-row">
-              <td>Saldo</td>
-              <td></td>
-              <td id="balance">0</td>
-            </tr>
-          </tfoot>
-        </table>
-        <button onclick="calculateTotals()">Calcular Totais</button>
-      </div>
+      <table id="financeTable">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Description</th>
+            <th>Amount ($)</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+          <tr class="total-row">
+            <td>Total Income</td>
+            <td></td>
+            <td id="totalIncome">0</td>
+            <td></td>
+          </tr>
+          <tr class="total-row">
+            <td>Total Expenses</td>
+            <td></td>
+            <td id="totalExpenses">0</td>
+            <td></td>
+          </tr>
+          <tr class="total-row">
+            <td>Balance</td>
+            <td></td>
+            <td id="balance">0</td>
+            <td></td>
+          </tr>
+        </tfoot>
+      </table>
+      <button onclick="addRow('income')">Add Income</button>
+      <button onclick="addRow('expense')">Add Expense</button>
     </div>
-    <script src="./assets/scripts/gastos.js"></script>
+    <script src="script.js"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker
+            .register('service-worker.js')
+            .then((registration) => {
+              console.log(
+                'Service Worker registered with scope:',
+                registration.scope,
+              );
+            })
+            .catch((error) => {
+              console.log('Service Worker registration failed:', error);
+            });
+        });
+      }
+    </script>
   </body>
 </html>

@@ -1,12 +1,13 @@
-const CACHE_NAME = 'gastos-mensais-v1';
+const CACHE_NAME = 'monthly-expenses-v1';
 const urlsToCache = [
-  '/',
   '/index.html',
-  '/assets/styles/gastos.css',
-  '/assets/scripts/gastos.js',
+  '/manifest.json',
+  '/script.js',
+  '/service-worker.js',
+  '/styles.css',
 ];
 
-// Instala o Service Worker
+// Install the Service Worker
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
@@ -15,7 +16,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Intercepta as requisições e serve arquivos do cache
+// Intercept requests and serve cached files
 self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(event.request).then((response) => {
@@ -24,7 +25,7 @@ self.addEventListener('fetch', (event) => {
   );
 });
 
-// Atualiza o Service Worker quando uma nova versão é instalada
+// Update the Service Worker when a new version is installed
 self.addEventListener('activate', (event) => {
   const cacheWhitelist = [CACHE_NAME];
   event.waitUntil(

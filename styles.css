@@ -1,0 +1,87 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: black;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  margin: 0;
+  overflow-y: auto;
+}
+
+.container {
+  width: 80%;
+  max-width: 800px;
+  background-color: black;
+  color: white;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+  overflow: auto;
+  max-height: 90vh;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
+  word-break: break-word;
+}
+
+.total-row {
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+button {
+  border: 1px solid #ddd;
+  background-color: black;
+  color: white;
+  margin: 5px;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+input {
+  width: 80%;
+  padding: 5px;
+  border: 1px solid #ddd;
+  background-color: #222;
+  color: white;
+}
+
+input:focus {
+  outline: none;
+  border: 1px solid #fff;
+}
+
+/* Media Query para telas menores */
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  button {
+    width: 100%;
+    margin: 5px 0;
+  }
+
+  input {
+    width: 100%;
+  }
+
+  table {
+    font-size: 14px;
+  }
+}
