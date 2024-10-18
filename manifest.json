@@ -1,12 +1,11 @@
 {
-  "name": "Monthly Expenses",
-  "short_name": "Expenses",
-  "description": "App to manage monthly expenses.",
+  "name": "Gastos",
+  "short_name": "Gastos",
+  "description": "Calcular seus gastos.",
   "start_url": "/index.html",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#000000",
   "theme_color": "#000000",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "images/money192.png",
@@ -18,6 +17,5 @@
       "sizes": "512x512",
       "type": "image/png"
     }
-  ],
-  "scope": "/"
+  ]
 }
