@@ -1,11 +1,11 @@
 const STORAGE_KEY = 'financeData';
 
-// Load data from localStorage on startup
+// Carrega os dados do localStorage ao iniciar
 function loadData() {
   const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
-  savedData.forEach(({ type, description, amount }) => {
-    createRow(type, description, amount);
+  savedData.forEach(({ sign, description, amount }) => {
+    createRow(sign, description, amount);
   });
 
   setTimeout(() => {
@@ -13,29 +13,32 @@ function loadData() {
   }, 50);
 }
 
-// Save data to localStorage
+// Salva os dados no localStorage
 function saveData() {
   const rows = Array.from(document.querySelectorAll('#financeTable tbody tr'));
 
   const data = rows.map((row) => {
-    const type = row.cells[0].textContent === 'Income' ? 'income' : 'expense';
+    const sign = row.cells[0].textContent;
     const description = row.querySelector('input[type="text"]').value;
     const amount =
       parseFloat(row.querySelector('input[type="number"]').value) || 0;
-    return { type, description, amount };
+    return { sign, description, amount };
   });
 
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-// Calculate totals for income, expenses, and balance
+// Calcula os totais de ganhos, despesas e saldo
 function calculateTotals() {
   let totalIncome = 0;
   let totalExpenses = 0;
 
-  document.querySelectorAll('input[type="number"]').forEach((input) => {
-    const value = parseFloat(input.value) || 0;
-    if (input.classList.contains('income')) {
+  document.querySelectorAll('#financeTable tbody tr').forEach((row) => {
+    const sign = row.cells[0].textContent;
+    const value =
+      parseFloat(row.querySelector('input[type="number"]').value) || 0;
+
+    if (sign === '+') {
       totalIncome += value;
     } else {
       totalExpenses += value;
@@ -50,30 +53,35 @@ function calculateTotals() {
   ).toFixed(2);
 }
 
-// Add a new row to the table
-function addRow(type) {
-  createRow(type);
+// Adiciona uma nova linha na tabela
+function addRow(sign) {
+  createRow(sign);
   saveData();
 }
 
-// Create a new row with optional data
-function createRow(type, description = '', amount = 0) {
+// Cria uma nova linha com dados opcionais
+function createRow(sign, description = '', amount = 0) {
   const tbody = document.querySelector('#financeTable tbody');
   const newRow = document.createElement('tr');
 
   newRow.innerHTML = `
-    <td>${type === 'income' ? 'Income' : 'Expenses'}</td>
-    <td><input type="text" value="${description}" placeholder="Description" /></td>
-    <td><input type="number" class="${type}" value="${amount}" /></td>
+    <td>${sign}</td>
+    <td><input type="text" value="${description}" placeholder="Descrição" /></td>
+    <td><input type="number" value="${amount}" /></td>
     <td>
-      <button onclick="editRow(this)">Editar</button>
-      <button onclick="removeRow(this)">Remover</button>
+      <button onclick="removeRow(this)">
+      <img src="images/close.png" alt="Ganho" width="20" height="20" />
+      </button>
     </td>
   `;
 
   const amountInput = newRow.querySelector('input[type="number"]');
+  const descriptionInput = newRow.querySelector('input[type="text"]');
 
-  // Add input event to recalculate totals
+  // Define foco automático no campo de descrição
+  descriptionInput.focus();
+
+  // Recalcula os totais ao alterar valores
   amountInput.addEventListener('input', () => {
     calculateTotals();
     saveData();
@@ -82,24 +90,24 @@ function createRow(type, description = '', amount = 0) {
   tbody.appendChild(newRow);
 }
 
-// Toggle between edit and view modes
+// Alterna entre modo de edição e visualização
 function editRow(button) {
   const row = button.parentElement.parentElement;
   const inputs = row.querySelectorAll('input');
 
   inputs.forEach((input) => (input.disabled = !input.disabled));
-  button.textContent = button.textContent === 'Edit' ? 'Save' : 'Edit';
+  button.textContent = button.textContent === 'Editar' ? 'Salvar' : 'Editar';
   saveData();
 }
 
-// Remove a row and recalculate totals
+// Remove uma linha e recalcula os totais
 function removeRow(button) {
   button.parentElement.parentElement.remove();
   calculateTotals();
   saveData();
 }
 
-// Load data on startup
+// Carrega os dados ao iniciar
 loadData();
 
 // Register the Service Worker
@@ -110,6 +118,3 @@ if ('serviceWorker' in navigator) {
     });
   });
 }
-
-// Detect user's language
-const userLanguage = navigator.language.slice(0, 2);

@@ -1,3 +1,7 @@
+* {
+  box-sizing: border-box;
+}
+
 body {
   font-family: Arial, sans-serif;
   background-color: black;
@@ -11,26 +15,45 @@ body {
 }
 
 .container {
-  width: 80%;
-  max-width: 800px;
+  width: 100%;
+  max-width: 500px;
   background-color: black;
   color: white;
-  /* padding: 20px; */
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   overflow: auto;
-  max-height: 90vh;
+  max-height: 100%;
+  box-sizing: border-box;
 }
 
 table {
+  box-sizing: border-box;
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 10px;
 }
 
+table td input {
+  width: 90%; /* Ocupa 90% da célula, ajuste conforme necessário */
+  margin: 0 auto;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #222;
+  color: white;
+  box-sizing: border-box;
+}
+
+table td {
+  padding: 10px;
+  text-align: center;
+  position: relative;
+}
+
 th,
 td {
+  box-sizing: border-box;
+  min-width: 25px;
   border: 1px solid #ddd;
-  /* padding: 10px; */
   text-align: center;
   word-break: break-word;
 }
@@ -44,8 +67,6 @@ button {
   border: 1px solid #ddd;
   background-color: black;
   color: white;
-  /* margin: 5px; */
-  /* padding: 10px; */
   cursor: pointer;
   transition: background-color 0.3s;
 }
@@ -55,9 +76,10 @@ button:hover {
 }
 
 input {
-  width: 80%;
-  /* padding: 5px; */
+  box-sizing: border-box;
+  margin: 5px;
   border: 1px solid #ddd;
+  border-radius: 5px;
   background-color: #222;
   color: white;
 }
@@ -69,13 +91,8 @@ input:focus {
 
 /* Media Query para telas menores */
 @media (max-width: 600px) {
-  .container {
-    padding: 10px;
-  }
-
   button {
     width: 100%;
-    /* margin: 5px 0; */
   }
 
   input {

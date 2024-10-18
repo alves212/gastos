@@ -9,33 +9,36 @@
   </head>
   <body>
     <div class="container">
-      <button onclick="addRow('income')">Ganhos +</button>
-      <button onclick="addRow('expense')">Despesas +</button>
+      <button type="button" onclick="addRow('+')">
+        Adicionar Ganhos
+        <img src="images/up.png" alt="Ganho" width="20" height="20" />
+      </button>
+      <button type="button" onclick="addRow('-')">
+        <img src="images/down.png" alt="Ganho" width="20" height="20" />
+        Adiconar Gastos
+      </button>
       <table id="financeTable">
-        <thead>
-          <tr>
-            <th>Categoria</th>
-            <th>Descrição</th>
-            <th>Valor</th>
-            <th>Ações</th>
-          </tr>
-        </thead>
+        <thead></thead>
         <tbody></tbody>
         <tfoot>
           <tr class="total-row">
-            <td>Ganhos</td>
+            <td>
+              <img src="images/add.png" alt="Ganho" width="20" height="20" />
+            </td>
             <td></td>
             <td id="totalIncome">0</td>
             <td></td>
           </tr>
           <tr class="total-row">
-            <td>Despesas</td>
+            <td>
+              <img src="images/remove.png" alt="Ganho" width="20" height="20" />
+            </td>
             <td></td>
             <td id="totalExpenses">0</td>
             <td></td>
           </tr>
           <tr class="total-row">
-            <td>Total</td>
+            <td></td>
             <td></td>
             <td id="balance">0</td>
             <td></td>
