@@ -69,9 +69,7 @@ function createRow(sign, description = '', amount = 0) {
     <td><input type="text" value="${description}" placeholder="Descrição" /></td>
     <td><input type="number" value="${amount}" /></td>
     <td>
-      <button onclick="removeRow(this)">
-      <img src="images/close.png" alt="Ganho" width="20" height="20" />
-      </button>
+      <button class="full-button" onclick="removeRow(this)">X</button>
     </td>
   `;
 

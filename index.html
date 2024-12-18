@@ -14,34 +14,41 @@
         <img src="images/up.png" alt="Ganho" width="20" height="20" />
       </button>
       <button type="button" onclick="addRow('-')">
-        <img src="images/down.png" alt="Ganho" width="20" height="20" />
-        Adiconar Gastos
+        Adicionar Gastos
+        <img src="images/down.png" alt="Gasto" width="20" height="20" />
       </button>
       <table id="financeTable">
         <thead></thead>
         <tbody></tbody>
         <tfoot>
           <tr class="total-row">
-            <td>
-              <img src="images/add.png" alt="Ganho" width="20" height="20" />
-            </td>
-            <td></td>
+            <td>+</td>
+            <td>Total Ganho</td>
             <td id="totalIncome">0</td>
-            <td></td>
-          </tr>
-          <tr class="total-row">
             <td>
-              <img src="images/remove.png" alt="Ganho" width="20" height="20" />
+              <img src="images/up.png" alt="Ganho" width="20" height="20" />
             </td>
-            <td></td>
-            <td id="totalExpenses">0</td>
-            <td></td>
           </tr>
           <tr class="total-row">
-            <td></td>
-            <td></td>
+            <td>-</td>
+            <td>Total Gasto</td>
+            <td id="totalExpenses">0</td>
+            <td>
+              <img src="images/down.png" alt="Gasto" width="20" height="20" />
+            </td>
+          </tr>
+          <tr class="total-row">
+            <td>=</td>
+            <td>Total Final</td>
             <td id="balance">0</td>
-            <td></td>
+            <td>
+              <img
+                src="images/fallback.png"
+                alt="Gasto"
+                width="20"
+                height="20"
+              />
+            </td>
           </tr>
         </tfoot>
       </table>
