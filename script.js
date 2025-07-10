@@ -40,25 +40,44 @@ async function saveData() {
   await setDoc(userDoc, { items: data })
 }
 
+function highlightUpdate(element) {
+  element.style.transition = 'background-color 0.3s ease'
+  element.style.backgroundColor = '#444'
+  setTimeout(() => {
+    element.style.backgroundColor = 'transparent'
+  }, 300)
+}
+
 // Calcula os totais
 function calculateTotals() {
   let totalIncome = 0
   let totalExpenses = 0
 
+  const incomeEl = document.getElementById('totalIncome')
+  const expenseEl = document.getElementById('totalExpenses')
+  const balanceEl = document.getElementById('balance')
+
   document.querySelectorAll('#financeTable tbody tr').forEach((row) => {
     const sign = row.cells[1].textContent
     const value =
       parseFloat(row.querySelector('input[type="number"]').value) || 0
-    if (sign === '+') totalIncome += value
-    else totalExpenses += value
+
+    if (sign === '+') {
+      totalIncome += value
+    } else {
+      totalExpenses += value
+    }
   })
 
-  document.getElementById('totalIncome').textContent = totalIncome.toFixed(2)
-  document.getElementById('totalExpenses').textContent =
-    totalExpenses.toFixed(2)
-  document.getElementById('balance').textContent = (
-    totalIncome - totalExpenses
-  ).toFixed(2)
+  // Atualiza os valores na tela
+  incomeEl.textContent = totalIncome.toFixed(2)
+  expenseEl.textContent = totalExpenses.toFixed(2)
+  balanceEl.textContent = (totalIncome - totalExpenses).toFixed(2)
+
+  // Animação suave ao atualizar
+  highlightUpdate(incomeEl)
+  highlightUpdate(expenseEl)
+  highlightUpdate(balanceEl)
 }
 
 // Cria linha na tabela
@@ -92,6 +111,7 @@ function createRow(sign, description = '', amount = 0, checked = false) {
   })
 
   tbody.appendChild(newRow)
+  newRow.classList.add(sign === '+' ? 'gain-row' : 'expense-row')
 }
 
 // Remove linha

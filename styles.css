@@ -1,60 +1,47 @@
+/* Base reset */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
+/* Corpo da página */
 body {
   font-family: Arial, sans-serif;
   background-color: black;
+  color: white;
   display: flex;
   justify-content: center;
   align-items: flex-start;
   height: 100vh;
-  margin: 0;
-  padding: 0;
   overflow-y: auto;
 }
 
+/* Container principal */
 .container {
   width: 100%;
   max-width: 500px;
+  padding: 16px;
   background-color: black;
-  color: white;
   box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
   overflow: auto;
   max-height: 100%;
-  box-sizing: border-box;
 }
 
+/* Tabelas */
 table {
-  box-sizing: border-box;
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 10px;
-}
-
-table td input {
-  width: 90%; /* Ocupa 90% da célula, ajuste conforme necessário */
-  margin: 0 auto;
-  padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #222;
-  color: white;
-  box-sizing: border-box;
-}
-
-table td {
-  padding: 10px;
-  text-align: center;
-  position: relative;
+  font-size: 16px;
 }
 
 th,
 td {
-  box-sizing: border-box;
-  min-width: 25px;
   border: 1px solid #ddd;
   text-align: center;
+  padding: 10px;
+  min-width: 25px;
   word-break: break-word;
 }
 
@@ -63,17 +50,44 @@ td {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
+/* Inputs dentro da tabela */
+table td input {
+  width: 90%;
+  padding: 5px;
+  margin: 0 auto;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #222;
+  color: white;
+}
+
+/* Estilo geral dos inputs */
+input {
+  margin: 5px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #222;
+  color: white;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #fff;
+}
+
+/* Botões */
 button {
   width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
+  padding: 10px;
+  border: 1px solid white;
+  border-radius: 8px;
   background-color: black;
   color: white;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: all 0.3s;
+  font-size: 16px;
 }
 
 button:hover {
@@ -81,31 +95,50 @@ button:hover {
   color: black;
 }
 
-input {
-  box-sizing: border-box;
-  margin: 5px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  background-color: #222;
-  color: white;
-}
-
-input:focus {
-  outline: none;
-  border: 1px solid #fff;
-}
-
-/* Media Query para telas menores */
+/* Responsividade */
 @media (max-width: 600px) {
-  button {
-    width: 100%;
-  }
-
-  input {
-    width: 100%;
-  }
-
   table {
     font-size: 14px;
   }
+
+  input,
+  button {
+    width: 100%;
+  }
+}
+
+/* Estilo visual para linhas de ganhos e gastos */
+.gain-row {
+  background-color: rgba(0, 255, 0, 0.105); /* verde claro transparente */
+}
+
+.expense-row {
+  background-color: rgba(255, 0, 0, 0.149); /* vermelho claro transparente */
+}
+/* Totais com cores distintas */
+.total-income {
+  color: #90ee90; /* verde pastel */
+  font-weight: bold;
+}
+
+.total-expense {
+  color: #f08080; /* vermelho pastel */
+  font-weight: bold;
+}
+
+.total-balance {
+  color: #add8e6; /* azul claro pastel */
+  font-weight: bold;
+}
+
+.total-row {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.total-income,
+.total-expense,
+.total-balance {
+  transition: all 0.3s ease-in-out;
 }
