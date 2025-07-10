@@ -9,7 +9,14 @@
     <link rel="manifest" href="manifest.json" />
   </head>
   <body>
-    <div class="container">
+    <form id="login-form">
+      <h2>Login</h2>
+      <input type="email" id="email" placeholder="E-mail" required />
+      <input type="password" id="password" placeholder="Senha" required />
+      <button type="submit">Entrar</button>
+    </form>
+
+    <div class="container" style="display: none">
       <button type="button" onclick="addRow('+')">
         Adicionar Ganhos
         <img src="images/up.png" alt="Ganho" width="20" height="20" />
@@ -45,7 +52,7 @@
             <td>
               <img
                 src="images/fallback.png"
-                alt="Gasto"
+                alt="Saldo"
                 width="20"
                 height="20"
               />
@@ -54,17 +61,8 @@
         </tfoot>
       </table>
     </div>
-    <script src="script.js"></script>
-    <script>
-      if ('serviceWorker' in navigator) {
-        window.addEventListener('load', () => {
-          navigator.serviceWorker
-            .register('service-worker.js')
-            .catch((error) => {
-              console.log('Service Worker registration failed:', error);
-            });
-        });
-      }
-    </script>
+
+    <!-- Apenas o auth.js inicia a lógica -->
+    <script type="module" src="auth.js"></script>
   </body>
 </html>

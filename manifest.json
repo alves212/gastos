@@ -2,8 +2,11 @@
   "name": "Gastos",
   "short_name": "Gastos",
   "description": "Calcular seus gastos.",
+  "lang": "pt-BR",
   "start_url": "/gastos/index.html",
+  "scope": "/gastos/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#000000",
   "theme_color": "#000000",
   "icons": [

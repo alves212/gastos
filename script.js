@@ -1,35 +1,46 @@
-const STORAGE_KEY = 'financeData'
+import { db, auth } from './firebase.js'
+import {
+  doc,
+  getDoc,
+  setDoc,
+} from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js'
 
-// Carrega os dados do localStorage ao iniciar
-function loadData() {
-  const savedData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || []
+// Carrega os dados do Firestore
+async function loadData() {
+  const user = auth.currentUser
+  if (!user) return
+
+  const userDoc = doc(db, 'financeData', user.uid)
+  const snapshot = await getDoc(userDoc)
+  const savedData = snapshot.exists() ? snapshot.data().items : []
 
   savedData.forEach(({ checked, sign, description, amount }) => {
     createRow(sign, description, amount, checked)
   })
 
-  setTimeout(() => {
-    calculateTotals()
-  }, 50)
+  setTimeout(() => calculateTotals(), 50)
 }
 
-// Salva os dados no localStorage
-function saveData() {
+// Salva os dados no Firestore
+async function saveData() {
+  const user = auth.currentUser
+  if (!user) return
+
   const rows = Array.from(document.querySelectorAll('#financeTable tbody tr'))
+  const data = rows
+    .map((row) => ({
+      checked: row.querySelector('input[type="checkbox"]').checked,
+      sign: row.cells[1].textContent,
+      description: row.querySelector('input[type="text"]').value.trim(),
+      amount: parseFloat(row.querySelector('input[type="number"]').value) || 0,
+    }))
+    .filter((item) => item.description !== '' || item.amount !== 0) // evita salvar linhas vazias
 
-  const data = rows.map((row) => {
-    const checked = row.querySelector('input[type="checkbox"]').checked
-    const sign = row.cells[1].textContent
-    const description = row.querySelector('input[type="text"]').value
-    const amount =
-      parseFloat(row.querySelector('input[type="number"]').value) || 0
-    return { checked, sign, description, amount }
-  })
-
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+  const userDoc = doc(db, 'financeData', user.uid)
+  await setDoc(userDoc, { items: data })
 }
 
-// Calcula os totais de ganhos, despesas e saldo
+// Calcula os totais
 function calculateTotals() {
   let totalIncome = 0
   let totalExpenses = 0
@@ -38,12 +49,8 @@ function calculateTotals() {
     const sign = row.cells[1].textContent
     const value =
       parseFloat(row.querySelector('input[type="number"]').value) || 0
-
-    if (sign === '+') {
-      totalIncome += value
-    } else {
-      totalExpenses += value
-    }
+    if (sign === '+') totalIncome += value
+    else totalExpenses += value
   })
 
   document.getElementById('totalIncome').textContent = totalIncome.toFixed(2)
@@ -54,13 +61,7 @@ function calculateTotals() {
   ).toFixed(2)
 }
 
-// Adiciona uma nova linha na tabela
-function addRow(sign) {
-  createRow(sign)
-  saveData()
-}
-
-// Cria uma nova linha com dados opcionais
+// Cria linha na tabela
 function createRow(sign, description = '', amount = 0, checked = false) {
   const tbody = document.querySelector('#financeTable tbody')
   const newRow = document.createElement('tr')
@@ -79,10 +80,8 @@ function createRow(sign, description = '', amount = 0, checked = false) {
   const amountInput = newRow.querySelector('input[type="number"]')
   const descriptionInput = newRow.querySelector('input[type="text"]')
 
-  // Define foco automático no campo de descrição
   descriptionInput.focus()
 
-  // Recalcula os totais ao alterar valores
   amountInput.addEventListener('input', () => {
     calculateTotals()
     saveData()
@@ -95,31 +94,18 @@ function createRow(sign, description = '', amount = 0, checked = false) {
   tbody.appendChild(newRow)
 }
 
-// Alterna entre modo de edição e visualização
-function editRow(button) {
-  const row = button.parentElement.parentElement
-  const inputs = row.querySelectorAll('input')
-
-  inputs.forEach((input) => (input.disabled = !input.disabled))
-  button.textContent = button.textContent === 'Editar' ? 'Salvar' : 'Editar'
-  saveData()
-}
-
-// Remove uma linha e recalcula os totais
-function removeRow(button) {
+// Remove linha
+window.removeRow = function (button) {
   button.parentElement.parentElement.remove()
   calculateTotals()
   saveData()
 }
 
-// Carrega os dados ao iniciar
-loadData()
-
-// Register the Service Worker
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('service-worker.js').catch((error) => {
-      console.log('Service Worker registration failed:', error)
-    })
-  })
+// Adiciona linha
+window.addRow = function (sign) {
+  createRow(sign)
+  saveData()
 }
+
+// Inicializa após login (chamada em auth.js)
+loadData()
