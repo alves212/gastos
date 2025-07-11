@@ -7,6 +7,7 @@ import {
 
 let sortMode = 'original'
 let filterState = 0 // 0: todos, 1: apenas marcados, 2: apenas desmarcados
+let originalData = []
 
 async function loadData() {
   const user = auth.currentUser
@@ -15,6 +16,7 @@ async function loadData() {
   const userDoc = doc(db, 'financeData', user.uid)
   const snapshot = await getDoc(userDoc)
   const savedData = snapshot.exists() ? snapshot.data().items : []
+  originalData = [...savedData] // guarda ordem original
 
   savedData.forEach(({ checked, sign, description, amount }) => {
     createRow(sign, description, amount, checked)
@@ -27,7 +29,7 @@ async function saveData() {
   const user = auth.currentUser
   if (!user) return
 
-  const rows = Array.from(document.querySelectorAll('#financeTable tbody tr'))
+  const rows = getAllRows()
   const data = rows
     .map((row) => ({
       checked: row.querySelector('input[type="checkbox"]').checked,
@@ -39,6 +41,10 @@ async function saveData() {
 
   const userDoc = doc(db, 'financeData', user.uid)
   await setDoc(userDoc, { items: data })
+}
+
+function getAllRows() {
+  return Array.from(document.querySelectorAll('#financeTable tbody tr'))
 }
 
 function highlightUpdate(element) {
@@ -57,7 +63,7 @@ function calculateTotals() {
   const expenseEl = document.getElementById('totalExpenses')
   const balanceEl = document.getElementById('balance')
 
-  document.querySelectorAll('#financeTable tbody tr').forEach((row) => {
+  getAllRows().forEach((row) => {
     const sign = row.cells[1].textContent
     const value =
       parseFloat(row.querySelector('input[type="number"]').value) || 0
@@ -88,9 +94,13 @@ function createRow(sign, description = '', amount = 0, checked = false) {
     </td>
   `
 
+  tbody.appendChild(newRow)
+  newRow.classList.add(sign === '+' ? 'gain-row' : 'expense-row')
+
   const checkbox = newRow.querySelector('input[type="checkbox"]')
   const amountInput = newRow.querySelector('input[type="number"]')
   const descriptionInput = newRow.querySelector('input[type="text"]')
+  const signCell = newRow.cells[1]
 
   descriptionInput.focus()
 
@@ -103,8 +113,14 @@ function createRow(sign, description = '', amount = 0, checked = false) {
     saveData()
   })
 
-  tbody.appendChild(newRow)
-  newRow.classList.add(sign === '+' ? 'gain-row' : 'expense-row')
+  if (signCell) {
+    signCell.style.cursor = 'pointer'
+    signCell.addEventListener('click', () => {
+      const isSelected = newRow.classList.contains('selected')
+      getAllRows().forEach((tr) => tr.classList.remove('selected'))
+      if (!isSelected) newRow.classList.add('selected')
+    })
+  }
 }
 
 window.removeRow = function (button) {
@@ -118,8 +134,21 @@ window.addRow = function (sign) {
   saveData()
 }
 
-window.showChart = function () {
-  alert('Função de gráfico em breve!')
+window.moveRowUp = function () {
+  const row = document.querySelector('#financeTable tbody tr.selected')
+  if (row && row.previousElementSibling) {
+    row.parentNode.insertBefore(row, row.previousElementSibling)
+    saveData()
+  }
+}
+
+window.moveRowDown = function () {
+  const row = document.querySelector('#financeTable tbody tr.selected')
+  const next = row?.nextElementSibling
+  if (row && next) {
+    row.parentNode.insertBefore(next, row)
+    saveData()
+  }
 }
 
 window.handleSortToggle = function () {
@@ -142,37 +171,30 @@ window.handleSortToggle = function () {
 
 function sortAndRenderRows(mode) {
   const tbody = document.querySelector('#financeTable tbody')
-  const rows = Array.from(tbody.querySelectorAll('tr'))
-  const sortedRows = [...rows]
+  const sortedRows = [...getAllRows()]
 
-  if (mode === 'asc') {
-    sortedRows.sort((a, b) => {
-      const aVal =
-        parseFloat(a.querySelector('input[type="number"]').value) || 0
-      const bVal =
-        parseFloat(b.querySelector('input[type="number"]').value) || 0
-      return aVal - bVal
-    })
-  } else if (mode === 'desc') {
-    sortedRows.sort((a, b) => {
-      const aVal =
-        parseFloat(a.querySelector('input[type="number"]').value) || 0
-      const bVal =
-        parseFloat(b.querySelector('input[type="number"]').value) || 0
-      return bVal - aVal
-    })
-  }
+  sortedRows.sort((a, b) => {
+    const aVal = parseFloat(a.querySelector('input[type="number"]').value) || 0
+    const bVal = parseFloat(b.querySelector('input[type="number"]').value) || 0
+    return mode === 'asc' ? aVal - bVal : bVal - aVal
+  })
 
   tbody.innerHTML = ''
   sortedRows.forEach((row) => tbody.appendChild(row))
 }
 
 function restoreOriginalOrder() {
-  location.reload()
+  const tbody = document.querySelector('#financeTable tbody')
+  tbody.innerHTML = ''
+  originalData.forEach(({ checked, sign, description, amount }) => {
+    createRow(sign, description, amount, checked)
+  })
+  calculateTotals()
+  saveData()
 }
 
 window.filterUnchecked = function () {
-  const rows = document.querySelectorAll('#financeTable tbody tr')
+  const rows = getAllRows()
   const button = document.getElementById('filterButton')
 
   if (filterState === 0) {
@@ -194,10 +216,6 @@ window.filterUnchecked = function () {
     button.textContent = '📋'
     filterState = 0
   }
-}
-
-window.exportData = function () {
-  alert('Exportação em desenvolvimento.')
 }
 
 loadData()

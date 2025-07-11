@@ -1,5 +1,12 @@
-* {
+/* Reset e base */
+html {
   box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
   margin: 0;
   padding: 0;
 }
@@ -15,6 +22,7 @@ body {
   overflow-y: auto;
 }
 
+/* Container principal */
 .container {
   width: 100%;
   max-width: 500px;
@@ -25,6 +33,7 @@ body {
   max-height: 100%;
 }
 
+/* Tabela */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -58,6 +67,7 @@ table td input {
   color: white;
 }
 
+/* Inputs e botões */
 input {
   margin: 5px;
   padding: 8px;
@@ -90,6 +100,7 @@ button:hover {
   color: black;
 }
 
+/* Responsivo */
 @media (max-width: 600px) {
   table {
     font-size: 14px;
@@ -105,6 +116,7 @@ button:hover {
   }
 }
 
+/* Estilos visuais extras */
 .gain-row {
   background-color: rgba(0, 255, 0, 0.105);
 }
@@ -163,6 +175,22 @@ button:hover {
   background-color: #333;
 }
 
+/* Utilitários */
 .hidden {
   display: none;
+}
+
+tr.selected {
+  outline: 2px solid #00f;
+  background-color: rgba(0, 0, 255, 0.1);
+}
+
+tr.selected:focus-within {
+  outline: 2px dashed #00f;
+}
+
+/* Login escondido inicialmente com transição suave (caso necessário) */
+#login-form {
+  display: none;
+  transition: opacity 0.3s ease;
 }

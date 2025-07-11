@@ -6,6 +6,7 @@ const urlsToCache = [
   '/gastos/styles.css',
   '/gastos/firebase.js',
   '/gastos/script.js',
+  '/gastos/auth.js',
   '/gastos/images/up.png',
   '/gastos/images/down.png',
   '/gastos/images/fallback.png',
@@ -13,25 +14,32 @@ const urlsToCache = [
   '/gastos/images/money512.png',
 ]
 
-// Instala e adiciona arquivos ao cache
+// Instala o service worker e armazena arquivos no cache
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(urlsToCache)
-    }),
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(urlsToCache)),
   )
+  self.skipWaiting() // Ativa imediatamente o novo SW
 })
 
-// Intercepta as requisições
+// Intercepta requisições para servir do cache se possível
 self.addEventListener('fetch', (event) => {
   event.respondWith(
-    caches.match(event.request).then((response) => {
-      return response || fetch(event.request)
+    caches.match(event.request).then((cachedResponse) => {
+      return (
+        cachedResponse ||
+        fetch(event.request).catch(() => {
+          // Retorno alternativo se estiver offline e a URL não estiver em cache
+          if (event.request.destination === 'image') {
+            return caches.match('/gastos/images/fallback.png')
+          }
+        })
+      )
     }),
   )
 })
 
-// Limpa caches antigos
+// Remove caches antigos durante a ativação
 self.addEventListener('activate', (event) => {
   const cacheWhitelist = [CACHE_NAME]
   event.waitUntil(
@@ -45,4 +53,5 @@ self.addEventListener('activate', (event) => {
       ),
     ),
   )
+  self.clients.claim() // Controla as páginas imediatamente
 })

@@ -7,12 +7,33 @@
     <title>Expenses</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="manifest" href="manifest.json" />
+
+    <!-- Evita piscar a tela com conteúdo não estilizado -->
+    <style>
+      body {
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.2s ease;
+      }
+    </style>
   </head>
   <body>
     <form id="login-form">
       <h2>Login</h2>
-      <input type="email" id="email" placeholder="E-mail" required />
-      <input type="password" id="password" placeholder="Senha" required />
+      <input
+        type="email"
+        id="email"
+        name="email"
+        placeholder="E-mail"
+        required
+      />
+      <input
+        type="password"
+        id="password"
+        name="password"
+        placeholder="Senha"
+        required
+      />
       <button type="submit">Entrar</button>
     </form>
 
@@ -21,10 +42,10 @@
       <div class="action-bar top">
         <button onclick="addRow('+')">➕</button>
         <button onclick="addRow('-')">➖</button>
-        <button onclick="showChart()">📊</button>
+        <button onclick="moveRowUp()">⬆️</button>
+        <button onclick="moveRowDown()">⬇️</button>
         <button id="sort-button" onclick="handleSortToggle()">🔄</button>
         <button id="filterButton" onclick="filterUnchecked()">📋</button>
-        <button onclick="exportData()">⬇️</button>
       </div>
 
       <table id="financeTable">
@@ -63,6 +84,14 @@
         </tfoot>
       </table>
     </div>
+
+    <!-- Aplica transição suave após o carregamento da página -->
+    <script>
+      window.addEventListener('load', () => {
+        document.body.style.opacity = '1'
+        document.body.style.visibility = 'visible'
+      })
+    </script>
 
     <!-- Apenas o auth.js inicia a lógica -->
     <script type="module" src="auth.js"></script>

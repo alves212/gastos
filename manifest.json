@@ -1,9 +1,9 @@
 {
   "name": "Gastos",
   "short_name": "Gastos",
-  "description": "Calcular seus gastos.",
+  "description": "Controle simples de receitas e despesas.",
   "lang": "pt-BR",
-  "start_url": "/gastos/index.html",
+  "start_url": "/gastos/",
   "scope": "/gastos/",
   "display": "standalone",
   "orientation": "portrait",
