@@ -1,11 +1,9 @@
-/* Base reset */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-/* Corpo da página */
 body {
   font-family: Arial, sans-serif;
   background-color: black;
@@ -17,7 +15,6 @@ body {
   overflow-y: auto;
 }
 
-/* Container principal */
 .container {
   width: 100%;
   max-width: 500px;
@@ -28,7 +25,6 @@ body {
   max-height: 100%;
 }
 
-/* Tabelas */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -47,10 +43,11 @@ td {
 
 .total-row {
   font-weight: bold;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
+  border-top: 2px solid rgba(255, 255, 255, 0.2);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
 }
 
-/* Inputs dentro da tabela */
 table td input {
   width: 90%;
   padding: 5px;
@@ -61,7 +58,6 @@ table td input {
   color: white;
 }
 
-/* Estilo geral dos inputs */
 input {
   margin: 5px;
   padding: 8px;
@@ -77,7 +73,6 @@ input:focus {
   border-color: #fff;
 }
 
-/* Botões */
 button {
   width: 100%;
   padding: 10px;
@@ -95,7 +90,6 @@ button:hover {
   color: black;
 }
 
-/* Responsividade */
 @media (max-width: 600px) {
   table {
     font-size: 14px;
@@ -105,40 +99,70 @@ button:hover {
   button {
     width: 100%;
   }
+
+  .container {
+    padding: 12px;
+  }
 }
 
-/* Estilo visual para linhas de ganhos e gastos */
 .gain-row {
-  background-color: rgba(0, 255, 0, 0.105); /* verde claro transparente */
+  background-color: rgba(0, 255, 0, 0.105);
 }
 
 .expense-row {
-  background-color: rgba(255, 0, 0, 0.149); /* vermelho claro transparente */
+  background-color: rgba(255, 0, 0, 0.149);
 }
-/* Totais com cores distintas */
+
 .total-income {
-  color: #90ee90; /* verde pastel */
+  color: #90ee90;
   font-weight: bold;
+  transition: all 0.3s ease-in-out;
 }
 
 .total-expense {
-  color: #f08080; /* vermelho pastel */
+  color: #f08080;
   font-weight: bold;
-}
-
-.total-balance {
-  color: #add8e6; /* azul claro pastel */
-  font-weight: bold;
-}
-
-.total-row {
-  background-color: rgba(255, 255, 255, 0.05);
-  border-top: 2px solid rgba(255, 255, 255, 0.2);
-  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
-}
-
-.total-income,
-.total-expense,
-.total-balance {
   transition: all 0.3s ease-in-out;
+}
+
+.total-balance {
+  color: #add8e6;
+  font-weight: bold;
+  transition: all 0.3s ease-in-out;
+}
+
+/* Barra de ações no topo */
+.action-bar.top {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #111;
+  border-bottom: 1px solid #444;
+  padding: 10px;
+  z-index: 100;
+}
+
+.action-bar.top button {
+  flex: 1;
+  margin: 0 4px;
+  padding: 10px 0;
+  font-size: 18px;
+  background-color: #000;
+  color: white;
+  border: 1px solid #444;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.action-bar.top button:hover {
+  background-color: #333;
+}
+
+.hidden {
+  display: none;
 }

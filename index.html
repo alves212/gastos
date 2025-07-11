@@ -17,14 +17,16 @@
     </form>
 
     <div class="container" style="display: none">
-      <button type="button" onclick="addRow('+')">
-        Adicionar Ganhos
-        <img src="images/up.png" alt="Ganho" width="20" height="20" />
-      </button>
-      <button type="button" onclick="addRow('-')">
-        Adicionar Gastos
-        <img src="images/down.png" alt="Gasto" width="20" height="20" />
-      </button>
+      <!-- Barra superior de ações -->
+      <div class="action-bar top">
+        <button onclick="addRow('+')">➕</button>
+        <button onclick="addRow('-')">➖</button>
+        <button onclick="showChart()">📊</button>
+        <button id="sort-button" onclick="handleSortToggle()">🔄</button>
+        <button id="filterButton" onclick="filterUnchecked()">📋</button>
+        <button onclick="exportData()">⬇️</button>
+      </div>
+
       <table id="financeTable">
         <thead></thead>
         <tbody></tbody>
